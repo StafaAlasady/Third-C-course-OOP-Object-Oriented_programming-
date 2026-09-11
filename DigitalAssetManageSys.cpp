@@ -107,7 +107,7 @@ int main() {
     std::cout << "1. Creating default asset:" << std::endl;
     DigitalAsset defaultAsset;
     defaultAsset.displayInfo();
-    std::cout << std::endl;    
+    std::cout << std::endl;
 
     // 2. Test parameterized constructor (including validation tests)
     std::cout << "2. Creating specific assets (testing validation):" << std::endl;
@@ -122,7 +122,7 @@ int main() {
         logoCopy.displayInfo();
         logoCopy.archive();        
         std::cout << "--- logoCopy going out of scope ---" << std::endl;
-    } // logoCopy destructor called here automatically (LIFO order)   
+    } // logoCopy destructor called here automatically (LIFO order)
 
     // 4. Test vector/array of objects to see multiple constructor/destructor calls
     std::cout << "\n4. Testing vector/array of assets in a local scope:" << std::endl;
@@ -135,7 +135,7 @@ int main() {
     } // Entire vector goes out of scope here, destroying batch items in reverse order!
 
     std::cout << "\n5. Final status check:" << std::endl;
-    std::cout << "Total assets remaining: " << DigitalAsset::getTotalAssets() << std::endl;    
+    std::cout << "Total assets remaining: " << DigitalAsset::getTotalAssets() << std::endl;  
 
     std::cout << "\n=== Program ending - remaining objects will be destroyed ===" << std::endl;
     return 0;
