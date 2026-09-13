@@ -41,7 +41,7 @@ public:
 
     // Parameterized constructor with validation
     DigitalAsset(const std::string& name, const std::string& type, double size) 
-        : fileType(type), isActive(true) {        
+        : fileType(type), isActive(true) { 
         
         // 1. Validate negative file sizes
         if (size < 0.0) {
