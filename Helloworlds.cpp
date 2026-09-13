@@ -28,7 +28,7 @@ int main() {
 
     //std::cout << " you are " << age << " years old";
 
-    double x = 3;
+    double x = 3.94;
     double y = 4;
     double z;
 
@@ -36,7 +36,10 @@ int main() {
     //z = std::min(x, y);
     //z = pow(2, 4);
     //z = sqrt(16);
-    z = abs(-3);
+    //z = abs(-3);
+    //z = round(x);
+    //z = ceil(x);
+    z = floor(x);
 
 
     std::cout << z;
