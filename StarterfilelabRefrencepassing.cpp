@@ -56,7 +56,7 @@ void healCharacter(Character& charRef, int healAmount) {
     if(charRef.health > 2000){
         charRef.health = 2000; //Capping it at 2000 max health
     }
-    std::cout << charRef.name << "was healed by: " << healAmount <<"! Current health: " << charRef.health << std::endl;
+    std::cout << charRef.name << " was healed by: " << healAmount <<"! Current health: " << charRef.health << std::endl;
 }
 
 // ========================================
@@ -66,32 +66,72 @@ void healCharacter(Character& charRef, int healAmount) {
 // TODO: Implement addItem function
 // This function should add an item to the front of the linked list
 // Parameters: Node*& head (reference to pointer), const string& item
-void addItem(/* TODO: Add parameters */) {
+void addItem(Node*& head, const std::string& item) {
+    Node* newNode = new Node (item, head);
     // TODO: Create new node with the item
     // TODO: Set the new node's next pointer to current head
     // TODO: Update head to point to new node
+    head = newNode;
     // Hint: Node* newNode = new Node(item, head);
+    std::cout <<"Added item to inventory: " << item << std::endl;
 }
 
 // TODO: Implement displayInventory function
 // This function should traverse and display all items in the linked list
-void displayInventory(/* TODO: Add parameter */) {
+void displayInventory(const Node* head) {
     // TODO: Check if inventory is empty
+    if (head == nullptr){
+        std::cout << " inventory is empty!" << std::endl;
+        return;
+    }
     // TODO: Traverse the linked list using a pointer
+    const Node* current = head;
     // TODO: Display each item name
+    std::cout << " === Current inventoy ===" << std::endl;
     // Hint: Use a while loop with current->next
+    while(current!= nullptr){
+        std::cout <<"- " << current->itemName << std::endl;
+        current = current->next;
+    }
 }
 
 // TODO: Implement removeItem function
 // This function should remove the first occurrence of an item from the list
 // Return true if item was found and removed, false otherwise
-bool removeItem(/* TODO: Add parameters */) {
+bool removeItem(Node*& head, const std::string& targetItem) {
     // TODO: Handle empty list case
+    if (head == nullptr)
+    {
+        return false;
+    }
+    
     // TODO: Handle case where first item matches
+    if (head->itemName == targetItem)
+    {
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+        return true;
+    }
+    
     // TODO: Traverse list to find item
+    Node* current = head;
+    while (current->next != nullptr && current->next->itemName != targetItem)
+    {
+        current = current->next;
+    }
+    
     // TODO: Update pointers to remove node
     // TODO: Delete the removed node
     // TODO: Return appropriate boolean value
+    if (current->next !=nullptr)
+    {
+        Node* temp = current->next;
+        current->next = temp->next; // A reaches around b to grab c
+        delete temp; // and this deletes b safely!
+        return true;
+    }
+    
     return false;
 }
 
@@ -103,31 +143,51 @@ bool removeItem(/* TODO: Add parameters */) {
 // This function should dynamically allocate an array of integers
 // Parameters: int initialSize
 // Return: pointer to the allocated array
-int* createScoreArray(/* TODO: Add parameter */) {
+int* createScoreArray(int initialSize) {
+       if(initialSize <= 0){
+        return nullptr;
+    }
     // TODO: Allocate array using new
+    int* scores = new int[initialSize];
     // TODO: Initialize all elements to 0
+    for (int i = 0; i < initialSize; ++i){
+        scores[i] = 0;
+    }
     // TODO: Return pointer to array
+    return scores;
     // Hint: int* scores = new int[initialSize];
-    return nullptr;
 }
 
 // TODO: Implement displayScores function
 // This function should display all scores in the array
 // Parameters: int* scores, int size
-void displayScores(/* TODO: Add parameters */) {
+void displayScores(const int* scores, int size) {
     // TODO: Check if scores pointer is valid
+    if (scores == nullptr)
+    {
+        std::cout << "Scores array is null!" << std::endl;
+        return;
+    }
+    
     // TODO: Loop through array and display each score
+    for(int i = 0; i < size; ++i){
+        std::cout << " Score ["<< i <<"]: " << scores [i] << endl;
+    }
 }
 
 // TODO: Implement updateScore function
 // This function should safely update a score at given index
 // Parameters: int* scores, int size, int index, int newScore
 // Return: true if update successful, false if invalid index
-bool updateScore(/* TODO: Add parameters */) {
+bool updateScore(int* scores, int size, int index, int newScore) {
     // TODO: Validate parameters (scores not null, valid index)
+    if (scores == nullptr || index < 0 || index >= size){
+        return false; // out of bounds or invalid
+    }
     // TODO: Update score at index
     // TODO: Return success/failure status
-    return false;
+    scores[index] = newScore;
+    return true;
 }
 
 // ========================================
@@ -136,17 +196,28 @@ bool updateScore(/* TODO: Add parameters */) {
 
 // TODO: Implement safeDeleteArray function
 // This function should safely delete a dynamically allocated array
-void safeDeleteArray(/* TODO: Add parameters */) {
+void safeDeleteArray(int*& scores) {
     // TODO: Check if pointer is not null
-    // TODO: Delete the array using delete[]
-    // TODO: Set pointer to nullptr (passed by reference)
+    if(scores!= nullptr){
+        // TODO: Delete the array using delete[]
+        delete[] scores;
+        // TODO: Set pointer to nullptr (passed by reference)
+        scores = nullptr;
+    }
+
+
 }
 
 // TODO: Implement clearInventory function
 // This function should safely delete all nodes in the linked list
-void clearInventory(/* TODO: Add parameter */) {
+void clearInventory(Node*& head) {
     // TODO: Create temporary pointer
     // TODO: Loop through list
+    while (head != nullptr){
+        Node* temp = head;
+        head = head ->next;
+        delete temp;
+    }
     // TODO: Store current node in temp
     // TODO: Move to next node
     // TODO: Delete temp node
@@ -172,8 +243,8 @@ int main() {
     
     // TODO: Test healCharacter function
     cout << "Healing character..." << endl;
-    // healCharacter(hero, 20);
-    // hero.displayInfo();
+     healCharacter(Mustafa, 150);
+    Mustafa.displayInfo();
     
     // Test Step 2: Inventory Management with Linked List
     cout << "\n--- Step 2: Inventory Management with Pointers ---" << endl;
@@ -181,47 +252,47 @@ int main() {
     
     // TODO: Test addItem function
     cout << "Adding items to inventory..." << endl;
-    // addItem(inventory, "Health Potion");
-    // addItem(inventory, "Magic Sword");
-    // addItem(inventory, "Shield");
+    addItem(inventory, "Health Potion");
+    addItem(inventory, "Magic Sword");
+    addItem(inventory, "Shield");
     
     // TODO: Test displayInventory function
     cout << "Current inventory:" << endl;
-    // displayInventory(inventory);
+    displayInventory(inventory);
     
     // TODO: Test removeItem function
     cout << "Removing 'Health Potion' from inventory..." << endl;
-    // if (removeItem(inventory, "Health Potion")) {
-    //     cout << "Item removed successfully!" << endl;
-    // } else {
-    //     cout << "Item not found!" << endl;
-    // }
-    // displayInventory(inventory);
+    if (removeItem(inventory, "Health Potion")) {
+     cout << "Item removed successfully!" << endl;
+    } else {
+     cout << "Item not found!" << endl;
+    }
+    displayInventory(inventory);
     
     // Test Step 3: Dynamic Memory for Game Stats
     cout << "\n--- Step 3: Dynamic Score Management ---" << endl;
     const int numScores = 5;
     
     // TODO: Test createScoreArray function
-    // int* gameScores = createScoreArray(numScores);
+    int* gameScores = createScoreArray(numScores);
     
     // TODO: Test updateScore function
-    // updateScore(gameScores, numScores, 0, 1500);
-    // updateScore(gameScores, numScores, 2, 2300);
-    // updateScore(gameScores, numScores, 4, 1800);
+    updateScore(gameScores, numScores, 0, 1500);
+    updateScore(gameScores, numScores, 2, 2300);
+    updateScore(gameScores, numScores, 4, 1800);
     
     // TODO: Test displayScores function
     cout << "Game scores:" << endl;
-    // displayScores(gameScores, numScores);
+    displayScores(gameScores, numScores);
     
     // Test Step 4: Cleanup and Safety
     cout << "\n--- Step 4: Safe Memory Cleanup ---" << endl;
     
     // TODO: Test safeDeleteArray function
-    // safeDeleteArray(gameScores);
+    safeDeleteArray(gameScores);
     
     // TODO: Test clearInventory function
-    // clearInventory(inventory);
+    clearInventory(inventory);
     
     cout << "All memory cleaned up safely!" << endl;
     cout << "\n=== Adventure Game Demo Complete ===" << endl;
